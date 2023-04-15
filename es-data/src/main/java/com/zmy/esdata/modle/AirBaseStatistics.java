@@ -1,0 +1,15 @@
+package com.zmy.esdata.modle;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+public class AirBaseStatistics {
+    private int name;
+    private int value;
+}

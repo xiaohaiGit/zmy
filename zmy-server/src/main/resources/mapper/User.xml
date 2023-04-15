@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zmy.zmyserver.dao.UserMapper">
+
+
+    <resultMap id="BaseResultMap" type="com.zmy.zmyserver.modle.User">
+        <id column="id" property="id" jdbcType="INTEGER" javaType="int"/>
+        <result column="username" property="username" jdbcType="VARCHAR" javaType="String"/>
+        <result column="email" property="email" jdbcType="VARCHAR" javaType="String"/>
+        <result column="password" property="password" jdbcType="VARCHAR" javaType="String"/>
+        <result column="age" property="age" jdbcType="INTEGER" javaType="int"/>
+        <result column="address" property="address" jdbcType="VARCHAR" javaType="String"/>
+        <result column="phone" property="phone" jdbcType="VARCHAR" javaType="String"/>
+        <result column="weixin" property="weixin" jdbcType="VARCHAR" javaType="String"/>
+        <result column="qq" property="qq" jdbcType="VARCHAR" javaType="String"/>
+        <result column="head_image_path" property="headImagePath" jdbcType="VARCHAR" javaType="String"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
+        <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
+    </resultMap>
+    <insert id="registerUser">
+        insert into user (email, username, password) value (#{email},#{username},#{password})
+    </insert>
+
+    <update id="recoverPassword">
+        UPDATE user
+        SET password = #{password}
+        WHERE email = #{email}
+    </update>
+    <update id="updateHeadImage">
+        UPDATE user
+        SET head_image_path = #{path}
+        WHERE email = #{email}
+    </update>
+    <update id="modifyUser" parameterType="User">
+        update user
+        <set>
+            <if test="username!=null">
+                username=#{username},
+            </if>
+            <if test="age!=0">
+                age=#{age},
+            </if>
+            <if test="address!=null">
+                address=#{address},
+            </if>
+            <if test="phone!=null">
+                phone=#{phone},
+            </if>
+            <if test="weixin!=null">
+                weixin=#{weixin},
+            </if>
+            <if test="qq!=null">
+                qq=#{qq},
+            </if>
+            <if test="updateTime!=null">
+                update_time=#{updateTime}
+            </if>
+        </set>
+        <where>
+            <if test="email!=null">
+                email=#{email}
+            </if>
+        </where>
+    </update>
+
+
+    <select id="selectAll" resultMap="BaseResultMap">
+        select *
+        from `user`
+    </select>
+
+    <select id="selectByEmail" resultMap="BaseResultMap">
+        select *
+        from user
+        where email = #{email}
+    </select>
+
+</mapper>

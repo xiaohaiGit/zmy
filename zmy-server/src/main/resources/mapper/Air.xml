@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zmy.zmyserver.dao.AirMapper">
+
+
+    <resultMap id="BaseResultMap" type="com.zmy.zmyserver.modle.Air">
+        <id column="id" property="id" jdbcType="INTEGER" javaType="int"/>
+        <result column="region" property="region" jdbcType="INTEGER" javaType="int"/>
+        <result column="type" property="type" jdbcType="INTEGER" javaType="int"/>
+        <result column="number" property="number" jdbcType="VARCHAR" javaType="String"/>
+        <result column="building" property="building" jdbcType="INTEGER" javaType="int"/>
+        <result column="storey" property="storey" jdbcType="INTEGER" javaType="int"/>
+        <result column="status" property="status" jdbcType="INTEGER" javaType="int"/>
+        <result column="desc" property="desc" jdbcType="VARCHAR" javaType="String"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
+        <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
+    </resultMap>
+
+    <insert id="add" parameterType="Air">
+        insert into air (`region`, `type`, `number`, `building`, `storey`, `desc`) value (#{region},#{type},#{number},#{building},#{storey},#{desc})
+    </insert>
+
+    <update id="modify" parameterType="Air">
+        update air
+        set `region`     = #{region},
+            `type`=#{type},
+            `building`=#{building},
+            `storey`=#{storey},
+            `desc`=#{desc},
+            `update_time`=#{updateTime}
+        where `number` = #{number}
+    </update>
+
+    <update id="delete">
+        update air
+        set `status` = 0
+        where number = #{number}
+    </update>
+
+    <select id="selectAll" resultMap="BaseResultMap">
+        select *
+        from air
+        where status = 1
+    </select>
+
+    <select id="selectByNumber" resultMap="BaseResultMap">
+        select *
+        from air
+        where number = #{number}
+    </select>
+    <select id="regionStat" resultType="AirBaseStatistics">
+        SELECT region AS NAME, COUNT(number) AS VALUE
+        FROM air
+        GROUP BY region
+        ORDER BY region
+    </select>
+    <select id="buildingStat" resultType="AirBaseStatistics">
+        SELECT building AS NAME, COUNT(number) AS VALUE
+        FROM air
+        GROUP BY building
+        ORDER BY building
+    </select>
+    <select id="storeyStat" resultType="AirBaseStatistics">
+        SELECT storey AS NAME, COUNT(number) AS VALUE
+        FROM air
+        GROUP BY storey
+        ORDER BY storey
+    </select>
+    <select id="typeStat" resultType="AirBaseStatistics">
+        SELECT type AS NAME, COUNT(number) AS VALUE
+        FROM air
+        GROUP BY type
+        ORDER BY type
+    </select>
+    <select id="count" resultType="java.lang.Integer">
+        select count(number)
+        from air
+        where status = 1
+    </select>
+
+
+</mapper>
